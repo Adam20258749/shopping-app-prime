@@ -1,0 +1,1500 @@
+<!--
+    ❗ WARNING: The Login is not working, it will be fixed in the next update and do not edit anything.❗
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime - Seasonal Shopping</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js for Admin Dashboard -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        /* --- THEMING VARIABLES --- */
+        :root {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.8);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #0a0a0a; /* Prime Default: Black */
+            --primary-hover: #1f2937;
+            --border: #e2e8f0;
+            --accent: #f59e0b; /* Prime Accent: Amber */
+        }
+        
+        /* THEME: CUSTOM (Default variables are the base for custom) */
+        body.theme-custom {
+            /* Inherits Prime Default (Black/Amber) */
+        }
+
+        /* THEME: BLACK FRIDAY */
+        body.theme-black_friday {
+            --bg-main: #0a0a0a;
+            --bg-card: #171717;
+            --bg-nav: rgba(23, 23, 23, 0.8);
+            --text-main: #f0f0f0;
+            --text-muted: #a3a3a3;
+            --primary: #dc2626; /* Red */
+            --primary-hover: #b91c1c;
+            --border: #262626;
+            --accent: #facc15; /* Yellow */
+        }
+        
+        /* THEME: CHRISTMAS */
+        body.theme-christmas {
+            --bg-main: #eef2ff; /* Light Lavender */
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.9);
+            --text-main: #14532d; /* Dark Green */
+            --text-muted: #b91c1c; /* Deep Red */
+            --primary: #b91c1c; /* Deep Red */
+            --primary-hover: #991b1b;
+            --border: #f87171; /* Light Red */
+            --accent: #facc15; /* Gold */
+        }
+
+        /* THEME: RAMADAN */
+        body.theme-ramadan {
+            --bg-main: #eef2f8; /* Very Light Blue-Gray */
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.9);
+            --text-main: #1f2937; /* Dark Gray */
+            --text-muted: #4b5563; /* Medium Gray */
+            --primary: #10b981; /* Emerald Green */
+            --primary-hover: #059669;
+            --border: #d1d5db;
+            --accent: #fcd34d; /* Bright Gold */
+        }
+        
+        /* THEME: EID AL-FITR */
+        body.theme-eid_al_fitr {
+            --bg-main: #f7f3e8; /* Creamy White */
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.9);
+            --text-main: #362e1c; /* Dark Brown */
+            --text-muted: #783f04; /* Copper */
+            --primary: #7e22ce; /* Deep Purple */
+            --primary-hover: #6b21a8;
+            --border: #c4b5fd;
+            --accent: #fcd34d; /* Bright Gold */
+        }
+
+        /* THEME: EID AL-ADHA */
+        body.theme-eid_al_adha {
+            --bg-main: #f9fafb; /* Lighter Blue-Gray */
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.9);
+            --text-main: #111827; /* Very Dark Blue */
+            --text-muted: #6b7280; /* Gray */
+            --primary: #10b981; /* Emerald Green */
+            --primary-hover: #059669;
+            --border: #d1d5db;
+            --accent: #f59e0b; /* Amber */
+        }
+
+        /* THEME: ISLAMIC NEW YEAR */
+        body.theme-islamic_new_year {
+            --bg-main: #e0f2f1; /* Light Teal */
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.9);
+            --text-main: #042f2e; /* Very Dark Teal */
+            --text-muted: #2dd4bf; /* Medium Teal */
+            --primary: #0d9488; /* Dark Teal */
+            --primary-hover: #0f766e;
+            --border: #5eead4;
+            --accent: #f59e0b; /* Amber */
+        }
+
+        /* General Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .text-primary { color: var(--primary); }
+        .bg-primary { background-color: var(--primary); }
+        .hover-bg-primary:hover { background-color: var(--primary-hover); }
+        .border-primary { border-color: var(--primary); }
+        .bg-card { background-color: var(--bg-card); }
+        .text-accent { color: var(--accent); }
+        .border-base { border-color: var(--border); }
+
+        /* Custom Navigation Blur */
+        .navbar {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: var(--bg-nav);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        /* Toast Message Styling */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s, visibility 0s 0.3s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+        
+        /* PIN input styles */
+        #pin-input {
+            letter-spacing: 0.5em; /* For that classic PIN look */
+        }
+
+    </style>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, limit, orderBy, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Global variables for Firebase access
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app, db, auth;
+        let userId = null;
+        let isAuthReady = false;
+
+        window.initFirebase = async () => {
+            try {
+                if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) {
+                    console.error("Firebase configuration is missing.");
+                    isAuthReady = true; 
+                    window.onFirebaseReady();
+                    return;
+                }
+                
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                window.auth = auth; // Expose auth globally
+
+                // Authentication (Attempt custom token sign-in first, then anonymous)
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                // Listen for Auth state changes
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        // Check if a user signed in via email/password and wants to persist
+                        if (localStorage.getItem('user_session') === user.uid) {
+                            userId = user.uid;
+                        } else if (user.isAnonymous) {
+                            userId = user.uid;
+                        } else {
+                            // Non-anonymous user signed in (e.g., via Canvas token)
+                            userId = user.uid;
+                        }
+                        
+                        console.log("Firebase Auth Ready. User ID:", userId);
+                    } else {
+                        console.log("No user signed in (or sign-out occurred).");
+                        userId = crypto.randomUUID(); // Fallback ID
+                    }
+                    isAuthReady = true;
+                    window.onFirebaseReady(); // Call function when ready
+                });
+
+                // Expose Firebase instances globally for other scripts
+                window.db = db;
+                window.getFirestore = getFirestore;
+                window.doc = doc;
+                window.getDoc = getDoc;
+                window.setDoc = setDoc;
+                window.onSnapshot = onSnapshot;
+                window.collection = collection;
+                window.query = query;
+                window.limit = limit;
+                window.orderBy = orderBy;
+                window.addDoc = addDoc;
+                window.deleteDoc = deleteDoc;
+                window.appId = appId;
+                window.userId = () => userId; // Expose a function to get current userId
+                window.signOut = signOut;
+                window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+                window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+            
+            } catch (e) {
+                console.error("Firebase Initialization Error:", e);
+                isAuthReady = true;
+                window.onFirebaseReady(); // Still try to proceed
+            }
+        };
+
+        window.initFirebase();
+
+    </script>
+</head>
+<body class="theme-default">
+    <div id="toast" class="toast"></div>
+
+    <!-- Main Application Container -->
+    <div class="min-h-screen flex flex-col">
+
+        <!-- Navigation Bar -->
+        <nav class="navbar shadow-sm sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <!-- Logo and Title -->
+                    <div class="flex items-center">
+                        <i data-lucide="gem" class="text-primary w-6 h-6 mr-2"></i>
+                        <span class="text-xl font-bold text-text-main">Prime</span>
+                    </div>
+
+                    <!-- Search Bar (Desktop) -->
+                    <div class="hidden sm:flex flex-1 max-w-lg items-center px-4">
+                        <div class="relative w-full">
+                            <input id="search-input" type="text" placeholder="Search products..." class="w-full py-2 pl-10 pr-4 rounded-full border border-base bg-card text-sm focus:ring-primary focus:border-primary transition">
+                            <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-muted"></i>
+                        </div>
+                    </div>
+
+                    <!-- Cart and Admin Buttons -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Profile/Auth Button -->
+                        <button id="profile-button" onclick="window.toggleAuthModal(true)" class="p-2 rounded-full hover:bg-gray-100 transition text-text-main">
+                            <i data-lucide="user" class="w-6 h-6"></i>
+                        </button>
+
+                        <button id="cart-button" onclick="window.toggleCartModal(true)" class="relative p-2 rounded-full hover:bg-gray-100 transition text-text-main">
+                            <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                            <span id="cart-count" class="absolute -top-1 -right-1 flex items-center justify-center h-5 w-5 rounded-full bg-primary text-white text-xs font-bold hidden">0</span>
+                        </button>
+                        
+                        <button id="admin-button" onclick="window.renderPage('adminLogin')" class="p-2 rounded-full hover:bg-gray-100 transition text-text-main group">
+                            <i data-lucide="lock" class="w-6 h-6 group-hover:text-primary"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Search Bar (Mobile) -->
+            <div class="sm:hidden p-4 border-t border-base">
+                <div class="relative w-full">
+                    <input id="search-input-mobile" type="text" placeholder="Search products..." class="w-full py-2 pl-10 pr-4 rounded-full border border-base bg-card text-sm focus:ring-primary focus:border-primary transition">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-muted"></i>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow max-w-7xl mx-auto py-8 w-full px-4 sm:px-6 lg:px-8">
+            
+            <!-- --- SHOP VIEW --- -->
+            <div id="shop-view" class="block">
+                <!-- Category Filters -->
+                <div id="category-filters" class="flex flex-wrap gap-2 mb-8 items-center justify-center">
+                    <!-- Filters will be injected here -->
+                </div>
+
+                <!-- Product Grid -->
+                <div id="product-list" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    <div class="col-span-full text-center py-20 text-text-muted">
+                        <i data-lucide="loader" class="w-8 h-8 mx-auto animate-spin mb-2"></i>
+                        Loading Products...
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="hidden text-center py-20">
+                    <i data-lucide="box" class="w-16 h-16 mx-auto text-text-muted mb-4"></i>
+                    <h3 class="text-xl font-semibold text-text-main">No Products Found</h3>
+                    <p class="text-text-muted">Try adjusting your search or filters.</p>
+                </div>
+            </div>
+
+            <!-- --- ADMIN LOGIN VIEW (PIN) --- -->
+            <div id="admin-login-view" class="hidden flex items-center justify-center h-[70vh]">
+                <div class="bg-card p-8 rounded-xl shadow-2xl w-full max-w-sm text-center border border-base">
+                    <i data-lucide="shield" class="w-12 h-12 mx-auto text-primary mb-4"></i>
+                    <h2 class="text-2xl font-bold mb-2">Admin Access</h2>
+                    <p class="text-text-muted mb-6">Enter Admin PIN Code</p>
+                    
+                    <input 
+                        id="pin-input" 
+                        type="password" 
+                        maxlength="4" 
+                        placeholder="----" 
+                        class="w-full text-4xl text-center py-3 border-2 border-base rounded-lg focus:border-primary focus:ring-primary transition mb-4 tracking-wider font-mono text-text-main"
+                        onkeydown="if(event.key === 'Enter') window.checkPin()"
+                    />
+                    <p id="pin-error" class="text-red-500 text-sm mb-4 hidden">Invalid PIN. Please try again.</p>
+                    
+                    <button 
+                        onclick="window.checkPin()" 
+                        class="w-full py-3 rounded-xl bg-primary text-white font-semibold hover-bg-primary transition shadow-md"
+                    >
+                        Login to Dashboard
+                    </button>
+                    <button onclick="window.renderPage('shop')" class="mt-4 text-sm text-text-muted hover:text-primary transition">
+                        Cancel / Back to Shop
+                    </button>
+                </div>
+            </div>
+
+            <!-- --- ADMIN DASHBOARD VIEW --- -->
+            <div id="admin-dashboard-view" class="hidden">
+                <header class="flex justify-between items-center mb-6 border-b border-base pb-4">
+                    <h1 class="text-3xl font-bold text-text-main flex items-center">
+                        <i data-lucide="layout-dashboard" class="w-7 h-7 mr-2 text-primary"></i>
+                        Prime Admin
+                    </h1>
+                    <button onclick="window.renderPage('shop')" class="flex items-center px-4 py-2 rounded-lg text-sm transition bg-red-500 text-white hover:bg-red-600">
+                        <i data-lucide="log-out" class="w-4 h-4 mr-2"></i> Exit Admin
+                    </button>
+                </header>
+                
+                <div class="flex flex-col lg:flex-row">
+                    <!-- Sidebar Navigation -->
+                    <div class="w-full lg:w-1/4 p-4 border-r border-base space-y-2 bg-gray-50 rounded-xl mb-6 lg:mr-6 flex-shrink-0 h-fit">
+                        <button data-tab="overview" onclick="window.showAdminTab('overview')" class="w-full flex items-center px-4 py-2 rounded-lg text-sm transition text-left hover:bg-primary/10 hover:text-primary font-medium">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 mr-2"></i> Overview
+                        </button>
+                        <button data-tab="orders" onclick="window.showAdminTab('orders')" class="w-full flex items-center px-4 py-2 rounded-lg text-sm transition text-left hover:bg-primary/10 hover:text-primary font-medium">
+                            <i data-lucide="receipt" class="w-5 h-5 mr-2"></i> All Orders
+                        </button>
+                        <button data-tab="products" onclick="window.showAdminTab('products')" class="w-full flex items-center px-4 py-2 rounded-lg text-sm transition text-left hover:bg-primary/10 hover:text-primary font-medium">
+                            <i data-lucide="package" class="w-5 h-5 mr-2"></i> Product Management
+                        </button>
+                        <button data-tab="users" onclick="window.showAdminTab('users')" class="w-full flex items-center px-4 py-2 rounded-lg text-sm transition text-left hover:bg-primary/10 hover:text-primary font-medium">
+                            <i data-lucide="users" class="w-5 h-5 mr-2"></i> Customers/Users
+                        </button>
+                        <button data-tab="settings" onclick="window.showAdminTab('settings')" class="w-full flex items-center px-4 py-2 rounded-lg text-sm transition text-left hover:bg-primary/10 hover:text-primary font-medium">
+                            <i data-lucide="settings" class="w-5 h-5 mr-2"></i> Settings & Security
+                        </button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="w-full lg:w-3/4">
+                        
+                        <!-- Overview Tab (Existing) -->
+                        <div id="admin-tab-overview" class="hidden">
+                            <h3 class="text-xl font-semibold mb-4 text-text-main">Sales Overview</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                <div class="bg-primary/10 p-4 rounded-xl">
+                                    <p class="text-sm font-medium text-primary">Total Sales</p>
+                                    <p id="dashboard-total-sales" class="text-2xl font-bold text-primary">$0.00</p>
+                                </div>
+                                <div class="bg-accent/10 p-4 rounded-xl">
+                                    <p class="text-sm font-medium text-accent">Total Items Sold</p>
+                                    <p id="dashboard-total-items" class="text-2xl font-bold text-accent">0</p>
+                                </div>
+                                <div class="bg-green-500/10 p-4 rounded-xl">
+                                    <p class="text-sm font-medium text-green-600">Avg Order Value</p>
+                                    <p id="dashboard-avg-order" class="text-2xl font-bold text-green-600">$0.00</p>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-4 text-text-main">Sales Chart</h3>
+                            <div class="bg-card p-4 rounded-xl shadow border border-base">
+                                <canvas id="salesChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Orders Tab (NEW) -->
+                        <div id="admin-tab-orders" class="hidden">
+                            <h3 class="text-xl font-semibold mb-4 text-text-main">Recent Orders</h3>
+                            <div class="bg-card rounded-xl shadow border border-base overflow-x-auto">
+                                <table class="min-w-full divide-y divide-base">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Order ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Customer Info</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Items</th>
+                                            <th class="px-6 py-3 text-right text-xs font-medium text-text-muted uppercase tracking-wider">Total</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-orders-table" class="bg-card divide-y divide-base">
+                                        <!-- Orders will be injected here -->
+                                        <tr><td colspan="5" class="p-4 text-center text-text-muted">Loading orders...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Product Management Tab (Existing) -->
+                        <div id="admin-tab-products" class="hidden">
+                            <h3 class="text-xl font-semibold mb-4 text-text-main">Product Management</h3>
+                            <!-- Add Product Form -->
+                            <div class="bg-gray-50 p-4 rounded-xl mb-6 border border-base">
+                                <h4 class="font-medium mb-3">Add New Product</h4>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <input id="new-product-name" type="text" placeholder="Name" class="p-2 border rounded-lg text-sm">
+                                    <input id="new-product-price" type="number" step="0.01" placeholder="Price ($)" class="p-2 border rounded-lg text-sm">
+                                    <select id="new-product-category" class="p-2 border rounded-lg text-sm">
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Fashion">Fashion</option>
+                                        <option value="Home">Home</option>
+                                        <option value="Accessories">Accessories</option>
+                                    </select>
+                                    <input id="new-product-icon" type="text" placeholder="Lucide Icon Name (e.g. 'cpu')" class="p-2 border rounded-lg text-sm">
+                                </div>
+                                <button onclick="window.addProduct()" class="mt-4 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover-bg-primary transition">Add Product</button>
+                            </div>
+
+                            <!-- Product List -->
+                            <div class="bg-card rounded-xl shadow border border-base">
+                                <ul id="admin-product-list" class="divide-y divide-base">
+                                    <!-- Products will be listed here -->
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Users Tab (NEW) -->
+                        <div id="admin-tab-users" class="hidden">
+                            <h3 class="text-xl font-semibold mb-4 text-text-main">Active Customers (from Orders)</h3>
+                            <p class="text-sm text-text-muted mb-4">This list is generated from unique user IDs found in the order history.</p>
+                            <div class="bg-card rounded-xl shadow border border-base overflow-x-auto">
+                                <table class="min-w-full divide-y divide-base">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">User ID (Auth ID)</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Last Known Email</th>
+                                            <th class="px-6 py-3 text-right text-xs font-medium text-text-muted uppercase tracking-wider">Total Orders</th>
+                                            <th class="px-6 py-3 text-right text-xs font-medium text-text-muted uppercase tracking-wider">Total Spent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-users-table" class="bg-card divide-y divide-base">
+                                        <!-- Users will be injected here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <!-- Settings Tab (Updated) -->
+                        <div id="admin-tab-settings" class="hidden">
+                            <h3 class="text-xl font-semibold mb-4 text-text-main">App Settings</h3>
+                            
+                            <!-- Theme Selection -->
+                            <div class="p-4 rounded-xl border border-base bg-gray-50 mb-6">
+                                <p class="font-medium mb-2">Select Theme (Applies to all users)</p>
+                                <div class="flex flex-wrap gap-4">
+                                    <!-- Base Themes -->
+                                    <button onclick="window.changeTheme('default')" class="theme-button default-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-gray-900 text-white">Prime Default</button>
+                                    <button onclick="window.changeTheme('black_friday')" class="theme-button black_friday-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-red-900 text-white">Black Friday</button>
+                                    
+                                    <!-- Seasonal Themes -->
+                                    <button onclick="window.changeTheme('christmas')" class="theme-button christmas-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-green-700 text-white">Christmas</button>
+                                    <button onclick="window.changeTheme('ramadan')" class="theme-button ramadan-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-teal-500 text-white">Ramadan</button>
+                                    <button onclick="window.changeTheme('eid_al_fitr')" class="theme-button eid_al_fitr-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-purple-600 text-white">Eid Al-Fitr</button>
+                                    <button onclick="window.changeTheme('eid_al_adha')" class="theme-button eid_al_adha-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-emerald-500 text-white">Eid al-Adha</button>
+                                    <button onclick="window.changeTheme('islamic_new_year')" class="theme-button islamic_new_year-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-cyan-700 text-white">Islamic New Year</button>
+                                    
+                                    <!-- Custom Theme -->
+                                    <button onclick="window.changeTheme('custom')" class="theme-button custom-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-gray-300 text-gray-800">Custom</button>
+
+                                </div>
+                            </div>
+                            
+                            <!-- Admin PIN Management -->
+                            <div class="p-4 rounded-xl border border-base bg-gray-50 mb-6">
+                                <p class="font-medium mb-2">Change Admin PIN Code (4 Digits)</p>
+                                <div class="flex space-x-3 items-center">
+                                    <input 
+                                        id="new-admin-pin" 
+                                        type="text" 
+                                        maxlength="4" 
+                                        placeholder="New PIN" 
+                                        class="p-2 border rounded-lg text-sm w-32 text-center"
+                                    >
+                                    <button onclick="window.changeAdminPin()" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover-bg-primary transition">Save New PIN</button>
+                                </div>
+                                <p id="current-pin-display" class="mt-2 text-xs text-text-muted">Current PIN: **** (Default: 1234)</p>
+                            </div>
+                            
+                            <!-- User ID Display -->
+                            <div class="p-4 rounded-xl border border-base bg-gray-50">
+                                <p class="font-medium mb-2">Authenticated User ID</p>
+                                <p class="font-mono text-xs p-2 bg-white rounded-lg border border-base break-all" id="admin-user-id">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-card border-t border-base mt-12 py-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-text-muted">
+                &copy; 2024 Prime. All rights reserved. User ID: <span id="display-user-id" class="font-mono text-xs">Loading...</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Auth Modal (NEW) -->
+    <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+        <div class="bg-card p-8 rounded-xl shadow-2xl w-full max-w-sm text-center border border-base" id="auth-form-container">
+            <h2 class="text-2xl font-bold mb-4" id="auth-title">User Sign In</h2>
+            <div id="logged-in-state" class="hidden">
+                <i data-lucide="check-circle" class="w-12 h-12 mx-auto text-green-500 mb-4"></i>
+                <p class="mb-4 text-text-main font-medium">You are currently logged in as:</p>
+                <p id="current-user-email" class="font-mono text-sm mb-6 break-all"></p>
+                <button onclick="window.userSignOut()" class="w-full py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition shadow-md">Sign Out</button>
+            </div>
+
+            <div id="auth-forms">
+                <input id="auth-email" type="email" placeholder="Email" class="w-full p-3 border border-base rounded-lg mb-3 text-text-main">
+                <input id="auth-password" type="password" placeholder="Password" class="w-full p-3 border border-base rounded-lg mb-4 text-text-main">
+                <p id="auth-error" class="text-red-500 text-sm mb-4 hidden"></p>
+                
+                <button id="sign-in-btn" onclick="window.userSignIn()" class="w-full py-3 rounded-xl bg-primary text-white font-semibold hover-bg-primary transition shadow-md">Sign In</button>
+                
+                <p class="text-sm mt-4 text-text-muted">
+                    <span id="auth-toggle-text">Don't have an account?</span> 
+                    <button id="auth-toggle-btn" onclick="window.toggleAuthMode()" class="text-primary hover:underline font-medium">Sign Up</button>
+                </p>
+            </div>
+            <button onclick="window.toggleAuthModal(false)" class="mt-4 text-sm text-text-muted hover:text-primary transition">
+                Close
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Cart Modal (Drawer) - Existing -->
+    <div id="cart-modal" class="hidden fixed inset-0 z-50 bg-black/50 modal-backdrop">
+        <div class="absolute inset-0" onclick="window.toggleCartModal(false)"></div>
+        <div class="fixed right-0 top-0 h-full w-full max-w-md bg-card shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col" id="cart-drawer">
+            <div class="flex justify-between items-center p-6 border-b border-base">
+                <h2 class="text-2xl font-semibold text-text-main">Shopping Cart</h2>
+                <button onclick="window.toggleCartModal(false)" class="p-2 rounded-full hover:bg-gray-100 text-text-main">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div id="cart-items" class="flex-grow p-6 overflow-y-auto space-y-4">
+                <!-- Cart items will be injected here -->
+            </div>
+
+            <div class="p-6 border-t border-base">
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-xl font-semibold text-text-main">Total:</p>
+                    <p id="cart-total-display" class="text-2xl font-bold text-primary">$0.00</p>
+                </div>
+                <!-- Changed to open Checkout Modal -->
+                <button onclick="window.openCheckoutModal()" class="w-full py-3 rounded-xl bg-primary text-white font-semibold hover-bg-primary transition shadow-md">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Checkout Form Modal (NEW) -->
+    <div id="checkout-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+        <div class="bg-card p-8 rounded-xl shadow-2xl w-full max-w-lg text-left border border-base">
+            <h2 class="text-2xl font-bold mb-4 text-text-main">Shipping Information</h2>
+            <div id="checkout-form">
+                <input id="customer-name" type="text" placeholder="Full Name" class="w-full p-3 border border-base rounded-lg mb-3 text-text-main">
+                <input id="customer-email" type="email" placeholder="Email Address" class="w-full p-3 border border-base rounded-lg mb-3 text-text-main">
+                <input id="customer-phone" type="tel" placeholder="Phone Number" class="w-full p-3 border border-base rounded-lg mb-3 text-text-main">
+                <textarea id="customer-address" placeholder="Home Address" rows="3" class="w-full p-3 border border-base rounded-lg mb-4 text-text-main"></textarea>
+                
+                <p class="text-xl font-semibold mb-4">Final Total: <span id="checkout-total-display" class="text-primary">$0.00</span></p>
+
+                <button onclick="window.placeOrderWithInfo()" class="w-full py-3 rounded-xl bg-primary text-white font-semibold hover-bg-primary transition shadow-md">
+                    Confirm & Place Order
+                </button>
+                <button onclick="document.getElementById('checkout-modal').classList.add('hidden')" class="mt-4 text-sm text-text-muted hover:text-primary transition">
+                    Back to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- GLOBAL DATA & UTILITIES ---
+
+        const PRODUCT_COLLECTION_PATH = 'public/data/products';
+        const ORDER_COLLECTION_PATH = 'public/data/orders';
+        const SETTINGS_COLLECTION_PATH = 'public/data/settings';
+        const ADMIN_PIN_KEY = 'admin_pin';
+
+        let products = [
+            // Default Products (used if Firestore is unavailable or empty)
+            { id: '1', name: 'Prime Headset', price: 59.99, category: 'Electronics', icon: 'headphones', inStock: true },
+            { id: '2', name: 'Prime Laptop Bag', price: 129.50, category: 'Fashion', icon: 'briefcase', inStock: true },
+        ];
+        
+        let salesChart = null;
+        let currentAdminPin = '4150'; // Default PIN
+        const CATEGORIES = ["All", "Electronics", "Fashion", "Home", "Accessories"];
+        const THEMES = ['default', 'black_friday', 'christmas', 'ramadan', 'eid_al_fitr', 'eid_al_adha', 'islamic_new_year', 'custom'];
+        let currentPage = 'shop'; 
+        let authMode = 'signIn'; // signIn or signUp
+
+        // Element Lookups (will be populated on DOMContentLoaded)
+        window.els = {};
+
+        // --- FIRESTORE / STORAGE UTILITIES ---
+
+        const Store = {
+            KEYS: {
+                CART: 'prime_cart',
+            },
+            
+            get: (key) => {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : [];
+            },
+            
+            set: (key, value) => {
+                localStorage.setItem(key, JSON.stringify(value));
+            },
+
+            saveSetting: async (key, value) => {
+                if (!window.db || !window.appId) return console.warn('Firestore not initialized.');
+                const docRef = doc(window.db, 'artifacts', window.appId, SETTINGS_COLLECTION_PATH, 'global');
+                try {
+                    await setDoc(docRef, { [key]: value }, { merge: true });
+                    showToast(`${key} saved!`);
+                } catch (error) {
+                    console.error('Error saving setting:', error);
+                }
+            },
+
+            getSetting: async (key) => {
+                if (!window.db || !window.appId) return null;
+                const docRef = doc(window.db, 'artifacts', window.appId, SETTINGS_COLLECTION_PATH, 'global');
+                try {
+                    const docSnap = await getDoc(docRef);
+                    return docSnap.exists() ? docSnap.data()[key] : null;
+                } catch (error) {
+                    console.error('Error getting setting:', error);
+                    return null;
+                }
+            },
+
+            listenToProducts: () => {
+                if (!window.db || !window.appId) return;
+                const q = query(collection(window.db, 'artifacts', window.appId, PRODUCT_COLLECTION_PATH));
+                
+                window.onSnapshot(q, (snapshot) => {
+                    const fetchedProducts = [];
+                    snapshot.forEach(doc => {
+                        fetchedProducts.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    products = fetchedProducts.length > 0 ? fetchedProducts : products;
+                    window.renderProducts();
+                    window.renderAdminProducts();
+                }, (error) => {
+                    console.error("Error listening to products:", error);
+                });
+            },
+
+            listenToOrders: () => {
+                if (!window.db || !window.appId) return;
+                // Ordering by date is generally good practice
+                const q = query(collection(window.db, 'artifacts', window.appId, ORDER_COLLECTION_PATH));
+                
+                window.onSnapshot(q, (snapshot) => {
+                    const orders = [];
+                    snapshot.forEach(doc => {
+                        orders.push({ id: doc.id, ...doc.data() });
+                    });
+                    window.updateDashboard(orders);
+                    window.renderAdminOrders(orders);
+                    window.renderAdminUsers(orders);
+                }, (error) => {
+                    console.error("Error listening to orders:", error);
+                });
+            },
+        };
+
+        function showToast(msg) {
+            if (!window.els || !els.toast) return console.warn('Toast element not found.');
+            els.toast.innerText = msg; 
+            els.toast.classList.add('show');
+            setTimeout(() => els.toast.classList.remove('show'), 3000);
+        }
+
+        // --- FIREBASE READY FUNCTION ---
+        window.onFirebaseReady = () => {
+            // 1. Element Lookups
+            window.els = {
+                // ... (existing lookups)
+                toast: document.getElementById('toast'),
+                productList: document.getElementById('product-list'),
+                emptyState: document.getElementById('empty-state'),
+                cartCount: document.getElementById('cart-count'),
+                cartItems: document.getElementById('cart-items'),
+                cartTotalDisplay: document.getElementById('cart-total-display'),
+                adminProductList: document.getElementById('admin-product-list'),
+                newProductName: document.getElementById('new-product-name'),
+                newProductPrice: document.getElementById('new-product-price'),
+                newProductCategory: document.getElementById('new-product-category'),
+                newProductIcon: document.getElementById('new-product-icon'),
+                dashboardTotalSales: document.getElementById('dashboard-total-sales'),
+                dashboardTotalItems: document.getElementById('dashboard-total-items'),
+                dashboardAvgOrder: document.getElementById('dashboard-avg-order'),
+                salesChartCanvas: document.getElementById('salesChart'),
+                adminUserId: document.getElementById('admin-user-id'),
+                displayUserId: document.getElementById('display-user-id'),
+                shopView: document.getElementById('shop-view'),
+                adminLoginView: document.getElementById('admin-login-view'),
+                adminDashboardView: document.getElementById('admin-dashboard-view'),
+                pinInput: document.getElementById('pin-input'),
+                pinError: document.getElementById('pin-error'),
+                
+                // NEW ELEMENTS
+                authModal: document.getElementById('auth-modal'),
+                authTitle: document.getElementById('auth-title'),
+                authForms: document.getElementById('auth-forms'),
+                authEmail: document.getElementById('auth-email'),
+                authPassword: document.getElementById('auth-password'),
+                authError: document.getElementById('auth-error'),
+                signInBtn: document.getElementById('sign-in-btn'),
+                authToggleText: document.getElementById('auth-toggle-text'),
+                authToggleBtn: document.getElementById('auth-toggle-btn'),
+                loggedInState: document.getElementById('logged-in-state'),
+                currentUserEmail: document.getElementById('current-user-email'),
+                newAdminPin: document.getElementById('new-admin-pin'),
+                currentPinDisplay: document.getElementById('current-pin-display'),
+                checkoutModal: document.getElementById('checkout-modal'),
+                checkoutTotalDisplay: document.getElementById('checkout-total-display'),
+                customerName: document.getElementById('customer-name'),
+                customerEmail: document.getElementById('customer-email'),
+                customerPhone: document.getElementById('customer-phone'),
+                customerAddress: document.getElementById('customer-address'),
+                adminOrdersTable: document.getElementById('admin-orders-table'),
+                adminUsersTable: document.getElementById('admin-users-table'),
+            };
+
+            // 2. Initialization Calls
+            renderCategoryFilters();
+            window.renderProducts();
+            window.updateCartUI(); 
+            window.showAdminTab('overview');
+            window.loadSettings(); 
+            window.updateAuthUI(); // New: Check and update Auth Modal state
+            
+            // 3. Attach Listeners
+            document.getElementById('search-input').oninput = window.renderProducts;
+            document.getElementById('search-input-mobile').oninput = window.renderProducts;
+            
+            // 4. Update User ID in UI
+            const uid = window.auth?.currentUser?.uid || window.userId() || 'Not Authenticated';
+            if (els.adminUserId) els.adminUserId.textContent = uid;
+            if (els.displayUserId) els.displayUserId.textContent = uid;
+            
+            // 5. Ensure the shop view is rendered
+            window.renderPage('shop');
+        };
+
+        // --- AUTHENTICATION LOGIC (NEW) ---
+
+        window.updateAuthUI = () => {
+            const user = window.auth?.currentUser;
+            if (!user || user.isAnonymous) {
+                els.loggedInState.classList.add('hidden');
+                els.authForms.classList.remove('hidden');
+                document.getElementById('profile-button').classList.remove('text-green-500'); // No highlight
+            } else {
+                els.loggedInState.classList.remove('hidden');
+                els.authForms.classList.add('hidden');
+                els.currentUserEmail.textContent = user.email || user.uid;
+                document.getElementById('profile-button').classList.add('text-green-500'); // Highlight active user
+            }
+            lucide.createIcons();
+        }
+        
+        window.toggleAuthModal = (show) => {
+            if (show) {
+                window.updateAuthUI();
+                els.authModal.classList.remove('hidden');
+            } else {
+                els.authModal.classList.add('hidden');
+            }
+            // Clear inputs and error on open/close
+            els.authEmail.value = '';
+            els.authPassword.value = '';
+            els.authError.classList.add('hidden');
+        };
+
+        window.toggleAuthMode = () => {
+            authMode = authMode === 'signIn' ? 'signUp' : 'signIn';
+            els.authTitle.textContent = authMode === 'signIn' ? 'User Sign In' : 'User Sign Up';
+            els.signInBtn.textContent = authMode === 'signIn' ? 'Sign In' : 'Sign Up';
+            els.authToggleText.textContent = authMode === 'signIn' ? "Don't have an account?" : "Already have an account?";
+            els.authToggleBtn.textContent = authMode === 'signIn' ? 'Sign Up' : 'Sign In';
+            els.authError.classList.add('hidden');
+        };
+
+        window.userSignIn = async () => {
+            const email = els.authEmail.value;
+            const password = els.authPassword.value;
+            els.authError.classList.add('hidden');
+
+            if (!email || !password) {
+                els.authError.textContent = 'Email and password are required.';
+                els.authError.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                if (authMode === 'signIn') {
+                    const userCredential = await window.signInWithEmailAndPassword(window.auth, email, password);
+                    localStorage.setItem('user_session', userCredential.user.uid);
+                    showToast('Signed in successfully!');
+                } else {
+                    const userCredential = await window.createUserWithEmailAndPassword(window.auth, email, password);
+                    localStorage.setItem('user_session', userCredential.user.uid);
+                    showToast('Account created and signed in!');
+                }
+                window.updateAuthUI();
+                window.toggleAuthModal(false);
+            } catch (error) {
+                const errorCode = error.code.replace('auth/', '').replace(/-/g, ' ');
+                els.authError.textContent = `Error: ${errorCode}.`;
+                els.authError.classList.remove('hidden');
+                console.error("Auth Error:", error);
+            }
+        };
+
+        window.userSignOut = async () => {
+            try {
+                await window.signOut(window.auth);
+                localStorage.removeItem('user_session');
+                // Re-authenticate anonymously to maintain Canvas context
+                await window.signInAnonymously(window.auth); 
+                showToast('You have been signed out.');
+                window.updateAuthUI();
+            } catch (error) {
+                showToast('Sign out failed.');
+                console.error("Sign Out Error:", error);
+            }
+        };
+
+        // --- PAGE/VIEW & ADMIN PIN LOGIC ---
+
+        window.renderPage = (pageName) => {
+            if (!window.els) return;
+            
+            currentPage = pageName;
+            
+            els.shopView.classList.add('hidden');
+            els.adminLoginView.classList.add('hidden');
+            els.adminDashboardView.classList.add('hidden');
+
+            if (pageName === 'shop') {
+                els.shopView.classList.remove('hidden');
+            } else if (pageName === 'adminLogin') {
+                els.adminLoginView.classList.remove('hidden');
+                els.pinInput.value = ''; 
+                els.pinError.classList.add('hidden');
+                els.pinInput.focus();
+            } else if (pageName === 'adminDashboard') {
+                els.adminDashboardView.classList.remove('hidden');
+                Store.listenToOrders(); // Ensure dashboard data is up to date when entering
+            }
+            
+            lucide.createIcons();
+        };
+
+        window.loadAdminPin = async () => {
+            const pin = await Store.getSetting(ADMIN_PIN_KEY);
+            currentAdminPin = pin || '1234';
+            if (els.currentPinDisplay) {
+                // Only show a mock to prevent security issue in UI
+                els.currentPinDisplay.textContent = `Current PIN: **** (Last set: ${new Date().toLocaleDateString()})`;
+            }
+        };
+
+        window.checkPin = () => {
+            if (!window.els || !els.pinInput) return;
+            const inputPin = els.pinInput.value;
+            els.pinError.classList.add('hidden'); 
+
+            if (inputPin === currentAdminPin) {
+                els.pinInput.value = ''; 
+                window.renderPage('adminDashboard');
+                window.showAdminTab('overview'); 
+                showToast('Admin access granted.');
+            } else {
+                els.pinError.classList.remove('hidden');
+                els.pinInput.value = '';
+                els.pinInput.focus();
+                showToast('Invalid PIN.');
+            }
+        };
+
+        window.changeAdminPin = async () => {
+            if (!window.els || !els.newAdminPin.value) {
+                return showToast("Please enter a new PIN.");
+            }
+            const newPin = els.newAdminPin.value.trim();
+            if (newPin.length !== 4 || isNaN(newPin)) {
+                return showToast("PIN must be exactly 4 digits.");
+            }
+
+            await Store.saveSetting(ADMIN_PIN_KEY, newPin);
+            currentAdminPin = newPin;
+            els.newAdminPin.value = '';
+            window.loadAdminPin(); // Update display
+        };
+
+        // --- THEME & SETTINGS LOGIC ---
+
+        window.loadSettings = async () => {
+            Store.listenToProducts(); // Start listening for products
+            
+            await window.loadAdminPin(); // Load the PIN first
+            
+            const currentTheme = await Store.getSetting('theme') || 'default';
+            window.applyTheme(currentTheme, false); // Apply theme without saving again
+        };
+
+        window.applyTheme = (themeName, save = true) => {
+            document.body.className = ''; 
+            document.body.classList.add(`theme-${themeName}`);
+            
+            document.querySelectorAll('.theme-button').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-offset-2', 'ring-primary');
+            });
+            document.querySelector(`.theme-button.${themeName}-theme`)?.classList.add('ring-2', 'ring-offset-2', 'ring-primary');
+
+            if (save) {
+                Store.saveSetting('theme', themeName);
+            }
+        };
+
+        window.changeTheme = (themeName) => {
+            window.applyTheme(themeName, true);
+        };
+
+        // --- PRODUCT & UI RENDERING (Existing logic mostly) ---
+
+        function renderCategoryFilters() {
+            const categoryFiltersEl = document.getElementById('category-filters');
+            if (!categoryFiltersEl) return;
+
+            categoryFiltersEl.innerHTML = CATEGORIES.map(c => `
+                <button 
+                    onclick="window.setCategoryFilter('${c}')" 
+                    data-category="${c}"
+                    class="category-filter px-4 py-2 bg-card border rounded-full text-sm font-medium text-text-main transition hover:border-primary"
+                >
+                    ${c}
+                </button>
+            `).join('');
+
+            window.setCategoryFilter('All', false); 
+        }
+
+        let currentFilter = 'All';
+
+        window.setCategoryFilter = (category, render = true) => {
+            currentFilter = category;
+            
+            document.querySelectorAll('.category-filter').forEach(btn => {
+                if (btn.getAttribute('data-category') === category) {
+                    btn.classList.add('bg-primary', 'text-white', 'hover:border-primary');
+                    btn.classList.remove('bg-card', 'text-text-main', 'border-base');
+                } else {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-card', 'text-text-main', 'border-base');
+                }
+            });
+
+            if (render) window.renderProducts();
+        };
+
+        window.renderProducts = () => {
+            // ... (product rendering logic remains the same)
+            if (!window.els || !els.productList) return;
+            
+            const searchTerm = (document.getElementById('search-input')?.value || document.getElementById('search-input-mobile')?.value || '').toLowerCase();
+            
+            const filteredProducts = products.filter(p => {
+                const nameStr = String(p.name).toLowerCase(); 
+                const categoryStr = String(p.category).toLowerCase(); 
+                const matchesSearch = nameStr.includes(searchTerm) || categoryStr.includes(searchTerm);
+                const matchesCategory = currentFilter === 'All' || p.category === currentFilter;
+                return matchesSearch && matchesCategory;
+            });
+
+            if (filteredProducts.length === 0) {
+                els.productList.innerHTML = '';
+                els.emptyState.classList.remove('hidden');
+                return;
+            } else {
+                els.emptyState.classList.add('hidden');
+            }
+
+            els.productList.innerHTML = filteredProducts.map(p => `
+                <div class="bg-card rounded-xl p-4 shadow-lg border border-base hover:shadow-xl transition duration-300 flex flex-col justify-between">
+                    <div class="text-center mb-3">
+                        <i data-lucide="${p.icon || 'package'}" class="w-12 h-12 mx-auto text-accent mb-2"></i>
+                        <p class="text-xs text-text-muted font-medium">${p.category}</p>
+                        <h3 class="font-semibold text-text-main truncate">${p.name}</h3>
+                    </div>
+                    <div>
+                        <p class="text-xl font-bold text-primary mb-3 text-center">$${parseFloat(p.price).toFixed(2)}</p>
+                        <button onclick="window.addToCart('${p.id}')" class="w-full py-2 rounded-lg bg-primary text-white text-sm font-medium hover-bg-primary transition shadow-md">
+                            <i data-lucide="plus" class="w-4 h-4 inline mr-1"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        };
+
+
+        // --- CART & ORDER LOGIC (UPDATED) ---
+
+        window.addToCart = (productId) => {
+            // ... (add to cart logic remains the same)
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const cart = Store.get(Store.KEYS.CART);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    icon: product.icon,
+                    quantity: 1,
+                });
+            }
+
+            Store.set(Store.KEYS.CART, cart);
+            window.updateCartUI();
+            showToast(`${product.name} added to cart!`);
+        };
+
+        window.removeFromCart = (productId) => {
+            // ... (remove from cart logic remains the same)
+            let cart = Store.get(Store.KEYS.CART);
+            const existingItemIndex = cart.findIndex(item => item.id === productId);
+
+            if (existingItemIndex > -1) {
+                const item = cart[existingItemIndex];
+                if (item.quantity > 1) {
+                    item.quantity -= 1;
+                } else {
+                    cart.splice(existingItemIndex, 1);
+                }
+            }
+
+            Store.set(Store.KEYS.CART, cart);
+            window.updateCartUI();
+        };
+
+        window.toggleCartModal = (show) => {
+            const cartModal = document.getElementById('cart-modal');
+            const cartDrawer = document.getElementById('cart-drawer');
+            if (!cartModal || !cartDrawer) return;
+
+            if (show) {
+                cartModal.classList.remove('hidden');
+                setTimeout(() => {
+                    cartDrawer.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                cartDrawer.classList.add('translate-x-full');
+                setTimeout(() => {
+                    cartModal.classList.add('hidden');
+                }, 300); 
+            }
+        };
+
+        window.updateCartUI = () => {
+            // ... (cart UI logic remains the same)
+            const cart = Store.get(Store.KEYS.CART);
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            if (window.els && els.cartCount) {
+                els.cartCount.textContent = cart.length;
+                els.cartCount.classList.toggle('hidden', cart.length === 0);
+            }
+
+            if (window.els && els.cartTotalDisplay) {
+                els.cartTotalDisplay.textContent = `$${total.toFixed(2)}`;
+            }
+
+            if (window.els && els.cartItems) {
+                if (cart.length === 0) {
+                    els.cartItems.innerHTML = '<p class="text-center text-text-muted mt-10">Your cart is empty.</p>';
+                } else {
+                    els.cartItems.innerHTML = cart.map(item => `
+                        <div class="flex items-center justify-between py-2 border-b border-base">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="${item.icon || 'package'}" class="w-6 h-6 text-gray-500"></i>
+                                </div>
+                                <div class="truncate">
+                                    <p class="font-medium text-text-main truncate">${item.name}</p>
+                                    <p class="text-sm text-text-muted">Qty: ${item.quantity}</p>
+                                </div>
+                            </div>
+                            <div class="text-right flex-shrink-0">
+                                <p class="font-semibold text-text-main">$${(item.price * item.quantity).toFixed(2)}</p>
+                                <button onclick="window.removeFromCart('${item.id}')" class="text-xs text-red-500 hover:text-red-700">Remove</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+            lucide.createIcons();
+        };
+
+        window.openCheckoutModal = () => {
+            const cart = Store.get(Store.KEYS.CART);
+            if (cart.length === 0) {
+                return showToast("Your cart is empty!");
+            }
+            
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            els.checkoutTotalDisplay.textContent = `$${total.toFixed(2)}`;
+            
+            // Pre-fill email if user is logged in
+            const user = window.auth?.currentUser;
+            if (user && user.email) {
+                els.customerEmail.value = user.email;
+            } else {
+                els.customerEmail.value = '';
+            }
+
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        };
+
+        window.placeOrderWithInfo = async () => {
+            const cart = Store.get(Store.KEYS.CART);
+            if (cart.length === 0) {
+                return showToast("Your cart is empty!");
+            }
+
+            const customerInfo = {
+                name: els.customerName.value.trim(),
+                email: els.customerEmail.value.trim(),
+                phone: els.customerPhone.value.trim(),
+                address: els.customerAddress.value.trim(),
+            };
+
+            if (!customerInfo.name || !customerInfo.email || !customerInfo.phone || !customerInfo.address) {
+                return showToast("Please fill in all customer information fields.");
+            }
+
+            if (!window.db || !window.appId || !window.auth.currentUser) {
+                return showToast("Error: User not authenticated or Database not ready.");
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            
+            const orderData = {
+                userId: window.auth.currentUser.uid,
+                customer: customerInfo, // NEW PII FIELD
+                items: cart,
+                total: total,
+                orderDate: new Date(),
+            };
+
+            try {
+                const ordersCollectionRef = collection(window.db, 'artifacts', window.appId, ORDER_COLLECTION_PATH);
+                await window.addDoc(ordersCollectionRef, orderData); 
+                
+                Store.set(Store.KEYS.CART, []);
+                window.updateCartUI();
+                window.toggleCartModal(false);
+                document.getElementById('checkout-modal').classList.add('hidden');
+                showToast("Order Placed Successfully!");
+
+            } catch (error) {
+                console.error("Error placing order:", error);
+                showToast("Failed to place order. Check console for details.");
+            }
+        };
+
+        // --- ADMIN LOGIC (UPDATED) ---
+
+        window.showAdminTab = (tabId) => {
+            const tabs = ['overview', 'orders', 'products', 'users', 'settings']; // Updated tabs
+            tabs.forEach(t => {
+                const tabContent = document.getElementById(`admin-tab-${t}`);
+                const tabButton = document.querySelector(`button[data-tab="${t}"]`);
+                
+                if (tabContent) {
+                    tabContent.classList.add('hidden');
+                }
+                if (tabButton) {
+                    tabButton.classList.remove('bg-primary/10', 'text-primary', 'font-semibold');
+                    tabButton.classList.add('hover:bg-primary/10', 'hover:text-primary'); 
+                }
+            });
+            
+            const activeContent = document.getElementById(`admin-tab-${tabId}`);
+            const activeButton = document.querySelector(`button[data-tab="${tabId}"]`);
+
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+            if (activeButton) {
+                activeButton.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
+            }
+        };
+
+        window.renderAdminProducts = () => {
+            // ... (product management rendering remains the same)
+            if (!window.els || !els.adminProductList) return;
+            
+            els.adminProductList.innerHTML = products.map(p => `
+                <li class="p-3 flex justify-between items-center bg-card hover:bg-gray-50 transition">
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="${p.icon || 'package'}" class="w-5 h-5 text-primary"></i>
+                        <span class="font-medium text-text-main">${p.name}</span>
+                        <span class="text-sm text-text-muted">($${parseFloat(p.price).toFixed(2)})</span>
+                    </div>
+                    <button onclick="window.deleteProduct('${p.id}')" class="text-red-500 hover:text-red-700 p-1 rounded-full">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </li>
+            `).join('');
+
+            lucide.createIcons();
+        };
+        
+        window.renderAdminOrders = (orders = []) => {
+            if (!window.els || !els.adminOrdersTable) return;
+            
+            if (orders.length === 0) {
+                els.adminOrdersTable.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-text-muted">No orders placed yet.</td></tr>';
+                return;
+            }
+
+            els.adminOrdersTable.innerHTML = orders.map(order => {
+                const date = order.orderDate?.toDate ? order.orderDate.toDate().toLocaleString() : 'N/A';
+                const customer = order.customer || {};
+                const itemsList = order.items.map(item => `${item.quantity}x ${item.name}`).join(', ');
+
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-text-muted truncate w-1/12">${order.id.substring(0, 8)}...</td>
+                        <td class="px-6 py-4 text-sm text-text-main">
+                            <p class="font-medium">${customer.name || 'N/A'}</p>
+                            <p class="text-xs text-text-muted truncate">${customer.email || 'N/A'}</p>
+                            <p class="text-xs text-text-muted">${customer.phone || 'N/A'}</p>
+                            <p class="text-xs text-text-muted truncate">${customer.address || 'N/A'}</p>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-text-muted max-w-xs truncate">${itemsList}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-primary">$${parseFloat(order.total).toFixed(2)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-text-muted">${date}</td>
+                    </tr>
+                `;
+            }).join('');
+        };
+        
+        window.renderAdminUsers = (orders = []) => {
+            if (!window.els || !els.adminUsersTable) return;
+            
+            const userStats = {};
+            orders.forEach(order => {
+                const userId = order.userId;
+                const total = order.total;
+                const email = order.customer?.email || 'Anonymous/N/A';
+                
+                if (!userStats[userId]) {
+                    userStats[userId] = {
+                        totalOrders: 0,
+                        totalSpent: 0,
+                        lastEmail: email,
+                    };
+                }
+                userStats[userId].totalOrders += 1;
+                userStats[userId].totalSpent += total;
+                if (email !== 'Anonymous/N/A') {
+                    userStats[userId].lastEmail = email;
+                }
+            });
+
+            const userListHtml = Object.keys(userStats).map(userId => {
+                const stats = userStats[userId];
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-text-main break-all">${userId}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-text-muted">${stats.lastEmail}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-accent">${stats.totalOrders}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-primary">$${stats.totalSpent.toFixed(2)}</td>
+                    </tr>
+                `;
+            }).join('');
+            
+            els.adminUsersTable.innerHTML = userListHtml || '<tr><td colspan="4" class="p-4 text-center text-text-muted">No user data found from orders.</td></tr>';
+        };
+
+        window.addProduct = async () => {
+            // ... (Add product logic remains the same)
+            if (!window.els || !els.newProductName.value || !els.newProductPrice.value) {
+                return showToast("Please fill in Name and Price.");
+            }
+            if (!window.db || !window.appId) return showToast("Error: Database not ready.");
+
+            const priceValue = parseFloat(els.newProductPrice.value);
+
+            const newProduct = {
+                name: els.newProductName.value,
+                price: priceValue,
+                category: els.newProductCategory.value,
+                icon: els.newProductIcon.value || 'package',
+                inStock: true,
+            };
+
+            if (isNaN(newProduct.price) || newProduct.price <= 0) {
+                return showToast("Price must be a positive number.");
+            }
+
+            try {
+                const productsCollectionRef = collection(window.db, 'artifacts', window.appId, PRODUCT_COLLECTION_PATH);
+                await window.addDoc(productsCollectionRef, newProduct);
+
+                // Clear form
+                els.newProductName.value = '';
+                els.newProductPrice.value = '';
+                els.newProductIcon.value = '';
+
+                showToast(`Product "${newProduct.name}" added!`);
+            } catch (error) {
+                console.error("Error adding product:", error);
+                showToast("Failed to add product.");
+            }
+        };
+
+        window.deleteProduct = async (productId) => {
+            // ... (Delete product logic remains the same)
+            if (!window.db || !window.appId) return showToast("Error: Database not ready.");
+            
+            const docRef = doc(window.db, 'artifacts', window.appId, PRODUCT_COLLECTION_PATH, productId);
+            try {
+                await window.deleteDoc(docRef);
+                showToast("Product deleted successfully!");
+            } catch (error) {
+                console.error("Error deleting product:", error);
+                showToast("Failed to delete product. Check console.");
+            }
+        };
+
+        // --- DASHBOARD & CHART LOGIC (Existing logic remains the same) ---
+        
+        window.updateDashboard = (orders = []) => {
+            if (!window.els || !els.dashboardTotalSales) return;
+            
+            const totalSales = orders.reduce((sum, order) => sum + order.total, 0);
+            const totalItems = orders.reduce((sum, order) => sum + order.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0);
+            const avgOrderValue = orders.length > 0 ? totalSales / orders.length : 0;
+
+            els.dashboardTotalSales.textContent = `$${totalSales.toFixed(2)}`;
+            els.dashboardTotalItems.textContent = totalItems;
+            els.dashboardAvgOrder.textContent = `$${avgOrderValue.toFixed(2)}`;
+
+            // Aggregate data by month for the chart
+            const monthlySales = {};
+            orders.forEach(order => {
+                // Handle Firestore Timestamp or Date object
+                const date = order.orderDate?.toDate ? order.orderDate.toDate() : new Date(order.orderDate);
+                const month = date.toLocaleString('default', { month: 'short', year: 'numeric' });
+                monthlySales[month] = (monthlySales[month] || 0) + order.total;
+            });
+
+            const labels = Object.keys(monthlySales).sort();
+            const data = labels.map(month => monthlySales[month]);
+
+            if (salesChart) {
+                salesChart.data.labels = labels;
+                salesChart.data.datasets[0].data = data;
+                salesChart.update();
+            } else {
+                window.renderSalesChart(labels, data);
+            }
+        };
+
+        window.renderSalesChart = (labels, data) => {
+            if (!window.els || !els.salesChartCanvas) return;
+            
+            const ctx = els.salesChartCanvas.getContext('2d');
+            
+            if (salesChart) {
+                salesChart.destroy();
+            }
+
+            salesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Sales ($)',
+                        data: data,
+                        backgroundColor: 'rgba(79, 70, 229, 0.7)', 
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        };
+
+        // --- Initial DOM Content Ready ---
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            if (window.isAuthReady) {
+                window.onFirebaseReady();
+            }
+        });
+
+    </script>
+</body>
+</html>
