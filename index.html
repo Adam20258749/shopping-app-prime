@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prime - Seasonal Shopping</title>
+    <title>Shoppysix - Seasonal Shopping</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Chart.js for Admin Dashboard -->
@@ -23,15 +23,15 @@
             --bg-nav: rgba(255, 255, 255, 0.8);
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --primary: #0a0a0a; /* Prime Default: Black */
+            --primary: #0a0a0a; /* Shoppysix Default: Black */
             --primary-hover: #1f2937;
             --border: #e2e8f0;
-            --accent: #f59e0b; /* Prime Accent: Amber */
+            --accent: #f59e0b; /* Shoppysix Accent: Amber */
         }
         
         /* THEME: CUSTOM (Default variables are the base for custom) */
         body.theme-custom {
-            /* Inherits Prime Default (Black/Amber) */
+            /* Inherits Shoppysix Default (Black/Amber) */
         }
 
         /* THEME: BLACK FRIDAY */
@@ -270,7 +270,7 @@
                     <!-- Logo and Title -->
                     <div class="flex items-center">
                         <i data-lucide="gem" class="text-primary w-6 h-6 mr-2"></i>
-                        <span class="text-xl font-bold text-text-main">Prime</span>
+                        <span class="text-xl font-bold text-text-main">Shoppysix</span>
                     </div>
 
                     <!-- Search Bar (Desktop) -->
@@ -368,7 +368,7 @@
                 <header class="flex justify-between items-center mb-6 border-b border-base pb-4">
                     <h1 class="text-3xl font-bold text-text-main flex items-center">
                         <i data-lucide="layout-dashboard" class="w-7 h-7 mr-2 text-primary"></i>
-                        Prime Admin
+                        Shoppysix Admin
                     </h1>
                     <button onclick="window.renderPage('shop')" class="flex items-center px-4 py-2 rounded-lg text-sm transition bg-red-500 text-white hover:bg-red-600">
                         <i data-lucide="log-out" class="w-4 h-4 mr-2"></i> Exit Admin
@@ -502,7 +502,7 @@
                                 <p class="font-medium mb-2">Select Theme (Applies to all users)</p>
                                 <div class="flex flex-wrap gap-4">
                                     <!-- Base Themes -->
-                                    <button onclick="window.changeTheme('default')" class="theme-button default-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-gray-900 text-white">Prime Default</button>
+                                    <button onclick="window.changeTheme('default')" class="theme-button default-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-gray-900 text-white">Shoppysix Default</button>
                                     <button onclick="window.changeTheme('black_friday')" class="theme-button black_friday-theme px-4 py-2 rounded-full border text-sm font-medium transition hover:shadow-md bg-red-900 text-white">Black Friday</button>
                                     
                                     <!-- Seasonal Themes -->
@@ -549,7 +549,7 @@
         <!-- Footer -->
         <footer class="bg-card border-t border-base mt-12 py-6">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-text-muted">
-                &copy; 2024 Prime. All rights reserved. User ID: <span id="display-user-id" class="font-mono text-xs">Loading...</span>
+                &copy; 2024 Shoppysix. All rights reserved. User ID: <span id="display-user-id" class="font-mono text-xs">Loading...</span>
             </div>
         </footer>
     </div>
@@ -645,8 +645,8 @@
 
         let products = [
             // Default Products (used if Firestore is unavailable or empty)
-            { id: '1', name: 'Prime Headset', price: 59.99, category: 'Electronics', icon: 'headphones', inStock: true },
-            { id: '2', name: 'Prime Laptop Bag', price: 129.50, category: 'Fashion', icon: 'briefcase', inStock: true },
+            { id: '1', name: 'Shoppysix Headset', price: 59.99, category: 'Electronics', icon: 'headphones', inStock: true },
+            { id: '2', name: 'Shoppysix Laptop Bag', price: 129.50, category: 'Fashion', icon: 'briefcase', inStock: true },
         ];
         
         let salesChart = null;
@@ -663,7 +663,7 @@
 
         const Store = {
             KEYS: {
-                CART: 'prime_cart',
+                CART: 'Shoppysix_cart',
             },
             
             get: (key) => {
